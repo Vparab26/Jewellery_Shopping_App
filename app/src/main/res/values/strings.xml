@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Jewellery_Shop</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="first_slide">Choose Your Products</string>
+    <string name="second_slide">Gold</string>
+    <string name="third_slide">Silver</string>
+    <string name="description">Jewellery is all about glamour! Gold and silver not only increase the value of any outfit, but also show respect for its wearer.</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+</resources>
