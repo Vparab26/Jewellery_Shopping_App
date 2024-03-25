@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.example.jewellery_shop.R;
 import com.example.jewellery_shop.adapters.SliderAdapter;
-
 public class OnBoardingActivity extends AppCompatActivity {
 
 

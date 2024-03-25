@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,10 +20,12 @@ import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.jewellery_shop.R;
 import com.example.jewellery_shop.adapters.CategoryAdapter;
 import com.example.jewellery_shop.adapters.NewProductsAdapter;
+import com.example.jewellery_shop.adapters.PopularProductAdapter;
 import com.example.jewellery_shop.databinding.FragmentHomeBinding;
 import com.example.jewellery_shop.models.CategoryModel;
 import com.example.jewellery_shop.models.HomeViewModel;
 import com.example.jewellery_shop.models.NewProductsModel;
+import com.example.jewellery_shop.models.PopularProductsModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,11 +37,14 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     CategoryAdapter categoryAdapter;
-    RecyclerView catRecyclerView,newProductRecyclerview;
+
+    RecyclerView catRecyclerView,newProductRecyclerview,popularRecyclerView;
     List<CategoryModel> categoryModelList;
     NewProductsAdapter newProductsAdapter;
     List<NewProductsModel> newProductsModelList;
     FirebaseFirestore db;
+    PopularProductAdapter popularProductAdapter;
+    List<PopularProductsModel>popularProductsModelList;
 
    public HomeFragment(){
 
@@ -50,6 +56,9 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         catRecyclerView=root.findViewById(R.id.rec_category);
         newProductRecyclerview=root.findViewById(R.id.new_product_rec);
+        popularRecyclerView=root.findViewById(R.id.popular_rec);
+
+
 
         db=FirebaseFirestore.getInstance();
 
@@ -107,6 +116,28 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
+
+        popularRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        popularProductsModelList=new ArrayList<>();
+        popularProductAdapter =new PopularProductAdapter(getContext(),popularProductsModelList);
+        popularRecyclerView.setAdapter(popularProductAdapter);
+
+        db.collection("AllProducts")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                PopularProductsModel popularProductsModel=document.toObject(PopularProductsModel.class);
+                                popularProductsModelList.add(popularProductsModel);
+                                popularProductAdapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Toast.makeText(getActivity(),""+task.getException(),Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
         return root;
 
     }
